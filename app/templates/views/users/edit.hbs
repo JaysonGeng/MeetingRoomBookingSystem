@@ -1,62 +1,58 @@
 <div class="align-items-center pt-3 pb-2 mb-3">
     <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/users">用户</a></li>
-        <li class="breadcrumb-item"><a href="">查看</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{user.name}}</li>
-    </ol>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/users">用户</a></li>
+            <li class="breadcrumb-item"><a href="">查看</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{user.name}}</li>
+        </ol>
     </nav>
 </div>
 
-<div id="mainCard" class="card col-sm-6" style="margin: 0 auto" >
+<div id="mainCard" class="card col-sm-6" style="margin: 0 auto">
 
-  <div class="card-body">
-    <h5 class="card-title">{{user.name}}</h5>
-    <p class="card-text">
-    <form id="frmEdit" action="javascript:submitform()">
-        <input type="hidden" name="userid" value="{{user.id}}">
-        <div class="form-group">
-            <label for="formGroupExampleInput">邮箱</label>
-            <input type="email" class="form-control" name="email" value="{{user.email}}">
-        </div>
-        <div class="form-group">
-            <label for="formGroupExampleInput">角色</label>
-            <select class="form-control" id="inputroles" name="roleid">
-                {{#each roles}}
-                    <option value="{{id}}" {{#ifCond id "==" ../user.RoleId }}selected{{/ifCond}} >{{name}}</option>
-                {{/each}}
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">保存</button>
-    </form>
-    </p>
-  </div>
+    <div class="card-body">
+        <h5 class="card-title">{{user.name}}</h5>
+        <p class="card-text">
+        <form id="frmEdit" action="javascript:submitform()">
+            <input type="hidden" name="userid" value="{{user.id}}">
+            <div class="form-group">
+                <label for="formGroupExampleInput">学号</label>
+                <input type="text" disabled="disabled" class="form-control" name="email" value="{{user.email}}">
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput">角色</label>
+                <select class="form-control" id="inputroles" name="roleid">
+                    {{#each roles}}
+                        <option value="{{id}}" {{#ifCond id "==" ../user.RoleId }}selected{{/ifCond}} >{{name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">保存</button>
+        </form>
+        </p>
+    </div>
 </div>
 
 <script>
-function submitform()
-{
-    var frm = $('#frmEdit');
-    var card = $('#mainCard');
-    var formData = serializeObject(frm);
+    function submitform () {
+        var frm = $('#frmEdit')
+        var card = $('#mainCard')
+        var formData = serializeObject(frm)
 
-    showLoader();
-    $.post('/users/edit',formData,
-    function(data)
-    {
-        if(data.success === true)
-        {
-            window.location = '/users';
-            return;
-        }
-
-        hideLoader();
-        alert(data.message);
-    },'JSON').fail(function(ex)
-    {
-        hideLoader();
-        console.error(ex);
-        alert('服务器上发生错误，请稍后重试。')
-    });
-}
+        showLoader()
+        $.post('http://202.194.15.92:8687/user/edit', formData,
+                function (data) {
+                    console.log(data)
+                    if (data.success === true) {
+                        window.location = '/users'
+                        return
+                    }
+                    hideLoader()
+                    alert(data.message)
+                }, 'JSON').fail(function (ex) {
+            hideLoader()
+            console.error(ex)
+            alert('服务器上发生错误，请稍后重试。')
+        })
+    }
 </script>
