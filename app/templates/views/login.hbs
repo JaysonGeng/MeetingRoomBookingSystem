@@ -1,0 +1,84 @@
+<script src="/assets/js/login.js"></script>
+
+<form class="form-signin" action="javascript:submitform()">
+    <div class="container">
+        {{#ifCond messageCode "==" 1}}
+            <div class="alert alert-success alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Success!</strong> 帐户验证成功。
+            </div>
+        {{/ifCond}}
+
+        {{#ifCond messageCode "==" 2}}
+            <div class="alert alert-danger alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Error!</strong> 无法验证帐户。
+            </div>
+        {{/ifCond}}
+
+        {{#ifCond messageCode "==" 3}}
+            <div class="alert alert-info alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Info!</strong> 帐号已被验证。
+            </div>
+        {{/ifCond}}
+    </div>
+
+    <div class="text-center mb-4">
+        <h1 class="h3 mb-3 font-weight-normal">会议室预约系统</h1>
+    </div>
+
+    <div class="form-label-group" id="box">
+        <input type="text" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
+
+    </div>
+
+    <div class="form-label-group">
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+
+    </div>
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+    <a class="mt-5 mb-3 text-center" href="/register">注册</a>
+    <p class="mt-5 mb-3 text-muted text-center">sdu&copy; 2019</p>
+
+</form>
+<script type="text/javascript">
+    function getUrlKey(name) {
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ""])[1].replace(/\+/g, '%20')) || null;
+    }
+
+    window.οnlοad = function () {
+        var name = getUrlKey("id")
+        if (name != null && name !== "") {
+            console.log(name)
+            var email = name;
+            showLoader(".form-signin");
+
+            $.ajax({
+                url: 'http://202.194.15.92:8381/get_info?xgh=' + email,
+                type: "GET",
+                success: function (resp) {
+                    console.log(resp)
+                    $.post('/auth', {email: email, password: resp.xm},
+                            function (data) {
+                                if (data.success === true) {
+                                    window.location = '/';
+                                    return;
+                                }
+                                hideLoader(".form-signin");
+                                alert(data.message);
+
+                            }, 'JSON').fail(function () {
+                        hideLoader(".form-signin");
+                        alert('2222222An error occurred on server, please try again later.')
+                    });
+                }
+            })
+
+
+        }
+
+    }
+</script>
+</body>

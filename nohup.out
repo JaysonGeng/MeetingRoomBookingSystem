@@ -1,0 +1,24 @@
+yarn run v1.17.3
+$ node ./app/sys/server.js
+Starting...
+[ 'info', 'plugin' ] 'plugin: Hapi-auth-basic registered'
+[ 'info', 'plugin' ] 'plugin: Hapi-auth-cookie registered'
+[ 'info', 'plugin' ] 'plugin: Hapi-auth-jwt2 registered'
+[ 'info', 'plugin' ] 'plugin: Hapi-logger registered'
+[ 'info', 'plugin' ] 'plugin: Swagger registered'
+[ 'info', 'plugin' ] 'plugin: inert registered'
+[ 'info', 'plugin' ] 'plugin: vision registered'
+Server is running on http://0.0.0.0:8688
+Enviroment: DEV
+yarn run v1.17.3
+$ node ./app/sys/server.js
+Starting...
+[ 'info', 'plugin' ] 'plugin: Hapi-auth-basic registered'
+[ 'info', 'plugin' ] 'plugin: Hapi-auth-cookie registered'
+[ 'info', 'plugin' ] 'plugin: Hapi-auth-jwt2 registered'
+[ 'info', 'plugin' ] 'plugin: Hapi-logger registered'
+[ 'info', 'plugin' ] 'plugin: Swagger registered'
+[ 'info', 'plugin' ] 'plugin: inert registered'
+[ 'info', 'plugin' ] 'plugin: vision registered'
+Server is running on http://0.0.0.0:8688
+Enviroment: DEV

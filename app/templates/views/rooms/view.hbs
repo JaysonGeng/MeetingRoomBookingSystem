@@ -1,0 +1,49 @@
+<div class="align-items-center pt-3 pb-2 mb-3">
+    <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/rooms">会议室</a></li>
+        <li class="breadcrumb-item"><a href="">查看</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{room.name}}</li>
+    </ol>
+    </nav>
+</div>
+
+<div class="card col-sm-6" style="margin: 0 auto" >
+
+  <div class="card-body">
+    <h5 class="card-title">{{room.name}}</h5>
+    <p class="card-text">
+    <form>
+      <div class="form-group">
+        <label for="formGroupExampleInput">描述</label>
+        <input type="text" class="form-control" value="{{room.description}}" readonly>
+      </div>
+      <div class="form-group">
+        <label for="formGroupExampleInput">可容纳人数</label>
+        <input type="text" class="form-control" value="{{room.people_count}}" readonly>
+      </div>
+      <hr>
+      {{#ifCond hasArticles "==" true}}
+        <h5 class="card-title">会议室设备</h5>
+      {{/ifCond}}
+      {{#ifCond hasArticles "==" false}}
+        <div class="form-group">
+          <label for="formGroupExampleInput">这个会议室没有可用的设备。</label>
+        </div>
+      {{/ifCond}}
+      {{#each articles}}
+        {{#ifCond amount ">" 0}}
+          <ul>
+            <li>
+              <div class="form-group">
+                <label for="formGroupExampleInput">{{amount}} {{name}} item(s)</label>
+              </div>
+            </li>
+          </ul>
+        {{/ifCond}}
+      {{/each}}
+    </form>
+    </p>
+    <a href="/rooms/edit?id={{room.id}}" class="btn btn-primary"><span data-feather="edit"></span> 编辑</a>
+  </div>
+</div>

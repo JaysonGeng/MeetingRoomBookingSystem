@@ -1,0 +1,100 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">最近会议</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <button class="btn btn-sm btn-outline-secondary" onclick="window.location='/events/add'">
+          <span data-feather="plus-circle"></span>
+          预约会议室
+        </button>
+    </div>
+</div>
+
+<div class="my-3 p-3 bg-white rounded box-shadow">
+    {{#each events}}
+        <div id="row_{{id}}" class="media text-muted pt-3">
+            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+            <strong class="d-block text-gray-dark">{{Event}}</strong>
+            会议室: {{Room}} <br>
+            会议开始时间: {{StartTime}} <br>
+            会议结束时间: {{EndTime}} <br>
+            会议类型: {{EventType}} <br>
+            </p>
+<!--            <div class="btn-group btn-group-sm" role="group" aria-label="Basic example" style="position:absolute;right:35px">-->
+<!--                <button type="button" class="btn btn-secondary" onclick="window.location='/events/view?id={{id}}'">-->
+<!--                    <span data-feather="info"></span>查看</button>-->
+<!--                {{!-- <button type="button" class="btn btn-secondary" onclick="window.location='/events/edit?id={{id}}'">-->
+<!--                    <span data-feather="edit"></span>edit</button>-->
+<!--                <button type="button" class="btn btn-secondary" onclick="deleteprompt({{id}})">-->
+<!--                    <span data-feather="trash"></span>delete</button> --}}-->
+<!--            </div>-->
+        </div>
+    {{/each}}
+</div>
+
+
+<div id="deleteModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">确定？</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>确定删除这次会议吗</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+        <button id="btnDelete" type="button" class="btn btn-danger">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+    function deleteprompt(id)
+    {
+        var mdl = $('#deleteModal');
+        var btn = $('#btnDelete');
+
+        if($(this).prop('disabled'))
+            return;
+
+        $(btn).unbind('click').click(function()
+        {
+            DeleteEvent(id);
+        });
+
+        console.log('Opening Modal');
+        $(mdl).modal('show');
+
+    }
+
+    function DeleteEvent(id)
+    {
+        var mdl = $('#deleteModal');
+
+        showLoader(mdl);
+        $.post('/events/delete',{id:id},
+        function(data)
+        {
+            hideLoader(mdl);
+            if(data.success === true)
+            {
+                $(mdl).modal('hide');
+                $('#row_'+id).fadeOut(function()
+                {
+                    $(this).remove();
+                });
+                return;
+            }
+            alert(data.message);
+        },'JSON').fail(function(ex)
+        {
+            hideLoader(mdl);
+            console.error(ex);
+            alert('服务器上发生错误，请稍后重试。')
+        });
+    }
+</script>

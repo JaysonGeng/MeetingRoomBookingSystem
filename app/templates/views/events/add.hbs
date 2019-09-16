@@ -1,0 +1,234 @@
+<div class="align-items-center pt-3 pb-2 mb-3">
+    <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/events">会议</a></li>
+        <li class="breadcrumb-item"><a href="">预约会议室</a></li>
+        <li class="breadcrumb-item active" aria-current="page">添加会议</li>
+    </ol>
+    </nav>
+</div>
+
+<div id="mainCard" class="card col-sm-6" style="margin: 0 auto" >
+  <div class="card-body">
+    <p class="card-text">
+    <form id="frmAdd" action="javascript:submitform()">
+        <div class="form-group">
+            <label for="formGroupExampleInput">会议室</label>
+            <select class="form-control" id="inputRooms" name="roomid" onchange="updateName()" required>
+                {{#each rooms}}
+                    <option value="{{id}}">{{name}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="formGroupExampleInput">会议类型</label>
+            <select class="form-control" id="inputTypes" name="eventtype" onchange="updateName()" required>
+                {{#each eventTypes}}
+                    <option value="{{id}}">{{name}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>预约时间</label>
+            <input type="date" name="bookDate" max="3000-12-31" id="bookDate" onchange="updateName()"
+                min="1000-01-01" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="formGroupExampleInput">开始时间</label>
+            <select class="form-control" id="inputStartTime" name="starttime" onchange="updateName()">
+                <option value="07:00">07:00</option>
+                <option value="07:15">07:15</option>
+                <option value="07:30">07:30</option>
+                <option value="07:45">07:45</option>
+                <option value="08:00">08:00</option>
+                <option value="08:15">08:15</option>
+                <option value="08:30">08:30</option>
+                <option value="08:45">08:45</option>
+                <option value="09:00">09:00</option>
+                <option value="09:15">09:15</option>
+                <option value="09:30">09:30</option>
+                <option value="09:45">09:45</option>
+                <option value="10:00">10:00</option>
+                <option value="10:15">10:15</option>
+                <option value="10:30">10:30</option>
+                <option value="10:45">10:45</option>
+                <option value="11:00">11:00</option>
+                <option value="11:15">11:15</option>
+                <option value="11:30">11:30</option>
+                <option value="11:45">11:45</option>
+                <option value="12:00">12:00</option>
+                <option value="12:15">12:15</option>
+                <option value="12:30">12:30</option>
+                <option value="12:45">12:45</option>
+                <option value="13:00">13:00</option>
+                <option value="13:15">13:15</option>
+                <option value="13:30">13:30</option>
+                <option value="13:45">13:45</option>
+                <option value="14:00">14:00</option>
+                <option value="14:15">14:15</option>
+                <option value="14:30">14:30</option>
+                <option value="14:45">14:45</option>
+                <option value="15:00">15:00</option>
+                <option value="15:15">15:15</option>
+                <option value="15:30">15:30</option>
+                <option value="15:45">15:45</option>
+                <option value="16:00">16:00</option>
+                <option value="16:15">16:15</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="formGroupExampleInput">结束时间</label>
+            <select class="form-control" id="inputEndTime" name="endtime" onchange="updateName()">
+                <option value="07:15">07:15</option>
+                <option value="07:30">07:30</option>
+                <option value="07:45">07:45</option>
+                <option value="08:00">08:00</option>
+                <option value="08:15">08:15</option>
+                <option value="08:30">08:30</option>
+                <option value="08:45">08:45</option>
+                <option value="09:00">09:00</option>
+                <option value="09:15">09:15</option>
+                <option value="09:30">09:30</option>
+                <option value="09:45">09:45</option>
+                <option value="10:00">10:00</option>
+                <option value="10:15">10:15</option>
+                <option value="10:30">10:30</option>
+                <option value="10:45">10:45</option>
+                <option value="11:00">11:00</option>
+                <option value="11:15">11:15</option>
+                <option value="11:30">11:30</option>
+                <option value="11:45">11:45</option>
+                <option value="12:00">12:00</option>
+                <option value="12:15">12:15</option>
+                <option value="12:30">12:30</option>
+                <option value="12:45">12:45</option>
+                <option value="13:00">13:00</option>
+                <option value="13:15">13:15</option>
+                <option value="13:30">13:30</option>
+                <option value="13:45">13:45</option>
+                <option value="14:00">14:00</option>
+                <option value="14:15">14:15</option>
+                <option value="14:30">14:30</option>
+                <option value="14:45">14:45</option>
+                <option value="15:00">15:00</option>
+                <option value="15:15">15:15</option>
+                <option value="15:30">15:30</option>
+                <option value="15:45">15:45</option>
+                <option value="16:00">16:00</option>
+                <option value="16:15">16:15</option>
+                <option value="16:30">16:30</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="formGroupExampleInput">会议名</label>
+            <input type="text" class="form-control" name="name" id="eventName" value="" onblur="assignName()" required>
+        </div>
+        <div class="form-group">
+            <label for="formGroupExampleInput">参会人员</label>
+            <div class="autocomplete">
+                <input id="myInput" class="form-control" type="text" placeholder="Search guests">
+            </div>
+        </div>
+        <div class="form-group">
+            <hr>
+            <h5 class="card-title">邀请成员:</h5>
+            <ul id="invitedGuests" style="list-style:none;margin:0;padding: 0;">
+            </ul>
+        </div>
+        <button type="submit" class="btn btn-primary">保存</button>
+    </form>
+    </p>
+  </div>
+</div>
+
+<script>
+    var users = JSON.parse('{{{json users}}}');
+    autocomplete(document.getElementById("myInput"), users);
+
+    var session = JSON.parse('{{{json session}}}');
+    addOrganizerGuestItem(
+        {
+            id: session.userAccount.id,
+            name: session.userAccount.name,
+            email: session.userAccount.email
+        });
+
+    $(function() {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+
+        var yyyy = today.getFullYear();
+        if(dd < 10){
+            dd = '0' + dd;
+        }
+        if(mm<10){
+            mm = '0' + mm;
+        }
+        var today = yyyy + '-' + mm + '-' + dd;
+        document.getElementById("bookDate").value = today;
+    });
+
+    function updateName(){
+        var inputName = document.getElementById("eventName").value;
+        if(inputName == "" || inputName.includes("Event")){
+            document.getElementById("eventName").value =
+                "Event " +
+                document.getElementById("bookDate").value + " " +
+                "(" + document.getElementById("inputStartTime").value + " - " +
+                document.getElementById("inputEndTime").value + ")";
+        }
+    }
+
+    function assignName(){
+        if(document.getElementById("eventName").value == ""){
+            document.getElementById("eventName").value =  "Event " +
+                document.getElementById("bookDate").value + " " +
+                "(" + document.getElementById("inputStartTime").value + " - " +
+                document.getElementById("inputEndTime").value + ")";
+        }
+        else if (document.getElementById("eventName").value.includes("Event")){
+            return;
+        }
+        else{
+            document.getElementById("eventName").value =
+                document.getElementById("eventName").value + " " +
+                document.getElementById("bookDate").value + " " +
+                "(" +  document.getElementById("inputStartTime").value + " - " +
+                document.getElementById("inputEndTime").value + ")";
+        }
+    }
+
+    function submitform()
+    {
+        var frm = $('#frmAdd');
+        var card = $('#mainCard');
+        var formData = serializeObject(frm);
+        formData.guests = selectedGuests;
+        formData.userid = session.userAccount.id;
+
+        showLoader();
+        $.ajax({
+            type: "POST",
+            url: '/events/add',
+            data: JSON.stringify(formData),
+            contentType: 'application/json',
+            dataType: 'JSON'
+        }).done(function(data)
+        {
+            if(data.success === true)
+            {
+                window.location = '/events';
+                return;
+            }
+
+            hideLoader();
+            alert(data.message);
+        }).fail(function(ex)
+        {
+            hideLoader();
+            console.error(ex);
+            alert('服务器上发生错误，请稍后重试。');
+        });
+    }
+</script>
