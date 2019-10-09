@@ -5,6 +5,8 @@ module.exports =
   { method: 'GET', path: '/articles', options: { handler: ArticlesCtrl.renderMain } },
   { method: 'GET', path: '/articles/edit', options: { handler: ArticlesCtrl.renderEdit } },
   { method: 'GET', path: '/articles/add', options: { handler: ArticlesCtrl.renderAdd } },
+
+
   { method: 'POST', path: '/articles/add', 
       options: 
       { 

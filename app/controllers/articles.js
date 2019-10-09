@@ -1,12 +1,12 @@
-//====================
+//= ===================
 // Dependencies
-//====================
+//= ===================
 const articleService = fw.getService('article')
 const rolesService = fw.getService('roles')
 
-//====================
+//= ===================
 // Methods
-//====================
+//= ===================
 /**
  * Render Main page
  * @param {Object} request
@@ -39,7 +39,6 @@ function renderEdit (request, h) {
         session: request.auth.credentials
       }))
   })
-
 }
 
 /**
@@ -54,7 +53,6 @@ function renderAdd (request, h) {
         session: request.auth.credentials
       }))
   })
-
 }
 
 function addArticle (request, h) {
@@ -89,7 +87,7 @@ function editArticle (request, h) {
       return
     }
 
-    //Make sure he is not adding an already existing email
+    // Make sure he is not adding an already existing email
     if (request.payload.name != article[0].name) {
       const articleExists = await articleService.getArticleByName(request.payload.name)
       if (articleExists.length > 0 && articleExists.name == request.payload.name) {

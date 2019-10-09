@@ -1,1 +1,0 @@
-{"key":{"segment":"sessions","id":"e2e197f0-d81c-11e9-9925-47996e669da0"},"ttl":259200000,"item":{"userAccount":{"id":40,"name":"admin","email":"admin","password":"admin_Meeting_2019","role_id":1,"salt":"e85823d0-acfb-11e9-b384-b578d5903153","confirmed":1,"active":1},"jsid":"e2e197f0-d81c-11e9-9925-47996e669da0"},"stored":1568595418864,"expires":"2019-09-19T00:56:58.864Z"}

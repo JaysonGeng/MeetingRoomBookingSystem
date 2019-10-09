@@ -23,6 +23,7 @@
         <div class="form-group">
             <label for="formGroupExampleInput">会议类型</label>
             <select class="form-control" id="inputTypes" name="eventtype" onchange="updateName()" required>
+                <option value="{{id}}">{{name}}</option>
                 {{#each eventTypes}}
                     <option value="{{id}}">{{name}}</option>
                 {{/each}}

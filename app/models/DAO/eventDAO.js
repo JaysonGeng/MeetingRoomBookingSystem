@@ -76,12 +76,15 @@ async function getEventsById(id)
     // ORDER BY e.start_time ASC`;
     const SQL =
         `SELECT r.name AS 'Room', 
+        r.id AS 'RoomId', 
         e.id AS 'EventId', 
         e.name AS 'Event', 
         e.start_time AS 'StartTime', 
         e.end_time AS 'EndTime', 
         u.name AS 'Organizer', 
-        et.color AS 'EventType'
+        et.color AS 'EventType',
+        et.id AS 'EventTypeId',
+        et.name AS 'EventTypeName'
     FROM Events e
     INNER JOIN Rooms r ON r.id = e.room_id
     INNER JOIN Users u ON u.id = e.user_id
@@ -133,10 +136,18 @@ async function addEvent(data)
     return response;
 }
 
+async function deleteEvent (id) {
+    const SQL =
+      `DELETE FROM Events
+    WHERE ID = ?`
+    return await fw.db.execute('local', SQL, [id])
+}
+
 module.exports =
 {
     getUpcomingEvents,
     getTodayEvents,
     addEvent,
-    getEventsById
+    getEventsById,
+    deleteEvent
 }

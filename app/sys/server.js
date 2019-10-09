@@ -5,126 +5,117 @@
  * Description: Proyect startup, inits Server instance
  */
 
-'use strict';
+'use strict'
 
-require('./fw');
-require('dotenv').config();
-const Hapi  = require('hapi');
+require('./fw')
+require('dotenv').config()
+const Hapi = require('hapi')
 
 fw.server = new Hapi.Server({
-    port: process.env.PORT || 8688,
-    host: process.env.HOST || '0.0.0.0',
-    routes:
+  port: process.env.PORT || 8788,
+  host: process.env.HOST || '0.0.0.0',
+  routes:
     {
-        cors: true,
-        // {
-        //     origin: ['http://*.domain.com']
-        // }
+      cors: true,
+      // {
+      //     origin: ['http://*.domain.com']
+      // }
     },
-    debug: false
-    // debug:
+  debug: false
+  // debug:
+  // {
+  //     request: ['*'],
+  //     log: ['*']
+  // }
+  ,
+  cache: [{
+    engine: require('catbox-disk'),
+    cachePath: __dirname + '/../../',
+    cleanEvery: 3600000,
+    partition: 'cache'
+  }]
+})
+
+function getRoutes () {
+  let routesPaths = fw.utils.getFiles('routes/**/*.js', true)
+  let routes = []
+  let index = 0
+
+  if (fw.utils.isArray(routesPaths)) {
+    for (let r of routesPaths)
+      routes.push(require(r))
+  }
+
+  for (let r of routes) {
+    if (!fw.utils.isObject(r) || fw.lodash.isEmpty(r))
+      throw 'Invalid route definition in ' + routesPaths[index]
+
+    // Force all routes to display in swagger
+    // for(let rx of r)
     // {
-    //     request: ['*'],
-    //     log: ['*']
+    //     if( fw.utils.isArray() )
+    //         rx.options.tags.push('api');
+    //     else
+    //         rx.options.tags = ['api']
     // }
-    ,
-    cache : [{
-            engine    : require('catbox-disk'),
-            cachePath: __dirname + '/../../',
-            cleanEvery: 3600000,
-            partition : 'cache'
-    }]
-});
 
-function getRoutes()
-{
-    let routesPaths = fw.utils.getFiles('routes/**/*.js', true);
-    let routes = [];
-    let index = 0;
+    index++
+  }
 
-    if(fw.utils.isArray(routesPaths))
-    {
-        for(let r of routesPaths )
-            routes.push(require(r));
-    }
-
-    for(let r of routes )
-    {
-        if(!fw.utils.isObject(r) || fw.lodash.isEmpty(r))
-            throw "Invalid route definition in "+routesPaths[index];
-
-        // Force all routes to display in swagger
-        // for(let rx of r)
-        // {
-        //     if( fw.utils.isArray() )
-        //         rx.options.tags.push('api');
-        //     else
-        //         rx.options.tags = ['api']
-        // }
-
-        index++;
-    }
-
-    return routes;
+  return routes
 }
 
-function getPlugins()
-{
-    let pluginsPaths = fw.utils.getFiles('sys/Plugins/**/*.js', true);
-    let plugins = [];
+function getPlugins () {
+  let pluginsPaths = fw.utils.getFiles('sys/Plugins/**/*.js', true)
+  let plugins = []
 
-    if (fw.utils.isArray(pluginsPaths))
-    {
-        for (let p of pluginsPaths)
-            plugins.push(require(p));
-    }
+  if (fw.utils.isArray(pluginsPaths)) {
+    for (let p of pluginsPaths)
+      plugins.push(require(p))
+  }
 
-    return plugins;
+  return plugins
 }
 
+async function start () {
 
-async function start(){
+  console.log('Starting...')
 
-    console.log('Starting...');
+  try {
+    for (let plugin of getPlugins())
+      await plugin(fw.server)
 
-    try
-    {
-        for (let plugin of getPlugins())
-            await plugin(fw.server);
+    for (let route of getRoutes())
+      fw.server.route(route)
 
-        for(let route of getRoutes())
-            fw.server.route(route);
+    fw.Handlebars = require('handlebars')
 
-        fw.Handlebars = require('handlebars');
-
-        fw.server.views({
-            engines:
+    fw.server.views({
+      engines:
+        {
+          hbs:
             {
-                hbs:
-                {
-                    module: fw.Handlebars,
-                    compileMode: 'sync' // engine specific
-                }
-            },
-            relativeTo: __dirname,
-            compileMode: 'async',
-            path: '../templates',
-            layout: 'default.layout',
-            partialsPath: '../templates/partials',
-            layoutPath: '../templates/layouts',
-            helpersPath: '../templates/helpers'
-        });
+              module: fw.Handlebars,
+              compileMode: 'sync' // engine specific
+            }
+        },
+      relativeTo: __dirname,
+      compileMode: 'async',
+      path: '../templates',
+      layout: 'default.layout',
+      partialsPath: '../templates/partials',
+      layoutPath: '../templates/layouts',
+      helpersPath: '../templates/helpers'
+    })
 
-        // Start server
-        await fw.server.start();
-        console.log(`Server is running on ${fw.server.info.uri}`);
-        console.log(`Enviroment: ${process.env.NODE_ENV || 'development'}`);
-    }
-    catch(error)
-    {
-        console.error(error);
-        throw(error);
-    }
+    // Start server
+    await fw.server.start()
+    console.log(`Server is running on ${fw.server.info.uri}`)
+    console.log(`Enviroment: ${process.env.NODE_ENV || 'development'}`)
+  } catch (error) {
+    console.error(error)
+    throw(error)
+  }
 }
 
-start();
+start()
